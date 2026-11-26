@@ -8,4 +8,13 @@ const LINE =
 
 const outDir = process.env.OUTPUT_DIR ?? "/output";
 mkdirSync(outDir, { recursive: true });
+// The gate refuses anything outside 1–200 characters or a line that is
+// not a complete statement, so fail loudly here instead of writing an
+// entry the judge never sees.
+if (LINE.length < 1 || LINE.length > 200) {
+  throw new Error(`comment must be 1-200 characters, got ${LINE.length}`);
+}
+if (!LINE.endsWith(".")) {
+  throw new Error("comment must end with a period");
+}
 writeFileSync(`${outDir}/entry.txt`, LINE, "utf8");
